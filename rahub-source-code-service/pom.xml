@@ -71,5 +71,12 @@
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- test -->
+		<dependency>
+    <groupId>org.apache.tomcat</groupId>
+    <artifactId>tomcat-dbcp</artifactId>
+    <version>9.0.1</version>
+</dependency>
+<!-- /test -->
 	</dependencies>	
 </project>
