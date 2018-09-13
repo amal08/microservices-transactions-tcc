@@ -33,7 +33,7 @@ public class ForumService extends CompositeTransactionParticipantService {
     public String addNewForum(Forum Forum) {
         String uuid = UUID.randomUUID().toString();
         Forum.setForumId(uuid);
-
+        Integer.parseInt(Forum.getTopicCategory());
         Forum saved = dao.save(Forum);
         return saved.getForumId();
     }
@@ -56,6 +56,8 @@ public class ForumService extends CompositeTransactionParticipantService {
         Forum.setForumId(uuid);
 
         LOG.info("Creating transaction [{}]", txId);
+        Integer.parseInt(Forum.getTopicCategory());
+        // throw exception if not integer
         Forum saved = getCompositeTransactionDao().saveOrUpdate(Forum);
 
         return saved.getForumId();
