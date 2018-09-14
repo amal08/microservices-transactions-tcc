@@ -4,76 +4,81 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 
+import net.jotorren.microservices.tx.ChangeStateJpaListener;
+
 @Entity
-public class SourceCodeItem implements Serializable {
-	private static final long serialVersionUID = 7803210035898675537L;
-	
-	@Id
-	@Column(nullable=false)
-	private String itemId;
-	
-	@Column(nullable=false)
-	private String fileName;
-	
-	@Column(nullable=false)
-	private String fileLocation;
-	
-	@Column
-	private String fileContent;
-	
-	@Column
-	private String fileDescription;
-	
-	@Column(nullable=false)
-	private String fileOwner;
+@EntityListeners(ChangeStateJpaListener.class)
+public class SourceCodeItem extends ChangeStateJpaListener implements Serializable {
 
-	public String getFileName() {
-		return fileName;
-	}
+    private static final long serialVersionUID = 7803210035898675537L;
 
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
+    @Id
+    @Column(nullable = false)
+    private String itemId;
 
-	public String getFileLocation() {
-		return fileLocation;
-	}
+    @Column(nullable = false)
+    private String fileName;
 
-	public void setFileLocation(String fileLocation) {
-		this.fileLocation = fileLocation;
-	}
+    @Column(nullable = false)
+    private String fileLocation;
 
-	public String getFileContent() {
-		return fileContent;
-	}
+    @Column
+    private String fileContent;
 
-	public void setFileContent(String fileContent) {
-		this.fileContent = fileContent;
-	}
+    @Column
+    private String fileDescription;
 
-	public String getFileDescription() {
-		return fileDescription;
-	}
+    @Column(nullable = false)
+    private String fileOwner;
 
-	public void setFileDescription(String fileDescription) {
-		this.fileDescription = fileDescription;
-	}
+    public String getFileName() {
+        return fileName;
+    }
 
-	public String getFileOwner() {
-		return fileOwner;
-	}
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
-	public void setFileOwner(String fileOwner) {
-		this.fileOwner = fileOwner;
-	}
+    public String getFileLocation() {
+        return fileLocation;
+    }
 
-	public String getItemId() {
-		return itemId;
-	}
+    public void setFileLocation(String fileLocation) {
+        this.fileLocation = fileLocation;
+    }
 
-	public void setItemId(String itemId) {
-		this.itemId = itemId;
-	}
+    public String getFileContent() {
+        return fileContent;
+    }
+
+    public void setFileContent(String fileContent) {
+        this.fileContent = fileContent;
+    }
+
+    public String getFileDescription() {
+        return fileDescription;
+    }
+
+    public void setFileDescription(String fileDescription) {
+        this.fileDescription = fileDescription;
+    }
+
+    public String getFileOwner() {
+        return fileOwner;
+    }
+
+    public void setFileOwner(String fileOwner) {
+        this.fileOwner = fileOwner;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
 }

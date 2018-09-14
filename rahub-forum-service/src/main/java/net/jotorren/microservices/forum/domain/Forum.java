@@ -6,52 +6,55 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import net.jotorren.microservices.tx.ChangeStateJpaListener;
+
 @Entity
-public class Forum implements Serializable {
-	private static final long serialVersionUID = -8739470216693425165L;
+public class Forum extends ChangeStateJpaListener implements Serializable {
 
-	@Id
-	@Column(nullable=false)
-	private String forumId;
+    private static final long serialVersionUID = -8739470216693425165L;
 
-	@Column(nullable=false)
-	private String topicName;
-	
-	@Column
-	private String topicCategory;
-	
-	@Column(nullable=false)
-	private String subjectId;
+    @Id
+    @Column(nullable = false)
+    private String forumId;
 
-	public String getForumId() {
-		return forumId;
-	}
+    @Column(nullable = false)
+    private String topicName;
 
-	public void setForumId(String forumId) {
-		this.forumId = forumId;
-	}
+    @Column
+    private String topicCategory;
 
-	public String getTopicName() {
-		return topicName;
-	}
+    @Column(nullable = false)
+    private String subjectId;
 
-	public void setTopicName(String topicName) {
-		this.topicName = topicName;
-	}
+    public String getForumId() {
+        return forumId;
+    }
 
-	public String getTopicCategory() {
-		return topicCategory;
-	}
+    public void setForumId(String forumId) {
+        this.forumId = forumId;
+    }
 
-	public void setTopicCategory(String topicCategory) {
-		this.topicCategory = topicCategory;
-	}
+    public String getTopicName() {
+        return topicName;
+    }
 
-	public String getSubjectId() {
-		return subjectId;
-	}
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
+    }
 
-	public void setSubjectId(String subjectId) {
-		this.subjectId = subjectId;
-	}
+    public String getTopicCategory() {
+        return topicCategory;
+    }
+
+    public void setTopicCategory(String topicCategory) {
+        this.topicCategory = topicCategory;
+    }
+
+    public String getSubjectId() {
+        return subjectId;
+    }
+
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
+    }
 }
