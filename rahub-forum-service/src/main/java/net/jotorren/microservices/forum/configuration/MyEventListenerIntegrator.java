@@ -20,9 +20,9 @@ public class MyEventListenerIntegrator implements Integrator {
     @Override
     public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
         EventListenerRegistry eventListenerRegistry = serviceRegistry.getService(EventListenerRegistry.class);
-        eventListenerRegistry.appendListeners(EventType.PRE_INSERT, new Forum());
-        eventListenerRegistry.appendListeners(EventType.PRE_UPDATE, new Forum());
-        eventListenerRegistry.appendListeners(EventType.PRE_DELETE, new Forum());
+        eventListenerRegistry.appendListeners(EventType.PERSIST, new Forum());
+        eventListenerRegistry.appendListeners(EventType.MERGE, new Forum());
+        eventListenerRegistry.appendListeners(EventType.DELETE, new Forum());
 
     }
 

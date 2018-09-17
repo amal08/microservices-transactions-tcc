@@ -14,9 +14,9 @@ public class MyEventListenerIntegrator implements Integrator {
     @Override
     public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
         EventListenerRegistry eventListenerRegistry = serviceRegistry.getService(EventListenerRegistry.class);
-        eventListenerRegistry.appendListeners(EventType.PRE_INSERT, new SourceCodeItem());
-        eventListenerRegistry.appendListeners(EventType.PRE_UPDATE, new SourceCodeItem());
-        eventListenerRegistry.appendListeners(EventType.PRE_DELETE, new SourceCodeItem());
+        eventListenerRegistry.appendListeners(EventType.PERSIST, new SourceCodeItem());
+        eventListenerRegistry.appendListeners(EventType.MERGE, new SourceCodeItem());
+        eventListenerRegistry.appendListeners(EventType.DELETE, new SourceCodeItem());
 
     }
 

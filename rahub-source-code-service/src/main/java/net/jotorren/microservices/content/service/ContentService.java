@@ -56,7 +56,7 @@ public class ContentService extends CompositeTransactionParticipantService {
         content.setItemId(uuid);
 
         LOG.info("Creating transaction [{}]", txId);
-        SourceCodeItem saved = getCompositeTransactionDao().saveOrUpdate(content);
+        SourceCodeItem saved = (SourceCodeItem) getCompositeTransactionDao().save(content);
 
         return saved.getItemId();
     }

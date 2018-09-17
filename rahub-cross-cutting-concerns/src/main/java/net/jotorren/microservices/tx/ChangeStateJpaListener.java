@@ -1,18 +1,23 @@
 package net.jotorren.microservices.tx;
 
-import org.hibernate.event.spi.PreDeleteEvent;
-import org.hibernate.event.spi.PreDeleteEventListener;
-import org.hibernate.event.spi.PreInsertEvent;
-import org.hibernate.event.spi.PreInsertEventListener;
-import org.hibernate.event.spi.PreUpdateEvent;
-import org.hibernate.event.spi.PreUpdateEventListener;
+import java.util.Map;
+import java.util.Set;
+
+import org.hibernate.HibernateException;
+import org.hibernate.event.spi.DeleteEvent;
+import org.hibernate.event.spi.DeleteEventListener;
+import org.hibernate.event.spi.MergeEvent;
+import org.hibernate.event.spi.MergeEventListener;
+import org.hibernate.event.spi.PersistEvent;
+import org.hibernate.event.spi.PersistEventListener;
+import org.hibernate.event.spi.PostDeleteEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.jotorren.microservices.context.SpringContext;
 import net.jotorren.microservices.context.ThreadLocalContext;
 
-public class ChangeStateJpaListener implements PreInsertEventListener, PreUpdateEventListener, PreDeleteEventListener {
+public class ChangeStateJpaListener implements PersistEventListener, MergeEventListener, DeleteEventListener {
 
     private static final long serialVersionUID = 1L;
 
@@ -30,20 +35,46 @@ public class ChangeStateJpaListener implements PreInsertEventListener, PreUpdate
         txManager.enlist(txId, command);
     }
 
+    public void onPostDelete(PostDeleteEvent event) {
+
+    }
+
     @Override
-    public boolean onPreInsert(PreInsertEvent event) {
+    public void onDelete(DeleteEvent event) throws HibernateException {
+
+    }
+
+    @Override
+    public void onDelete(DeleteEvent event, Set transientEntities) throws HibernateException {
+        String txId = (String) ThreadLocalContext.get(CompositeTransactionParticipantService.CURRENT_TRANSACTION_KEY);
+        if (null == txId) {
+            LOG.info("onPreRemove outside any transaction");
+        } else {
+            LOG.info("onPreRemove inside transaction [{}]", txId);
+            enlist(event.getObject(), EntityCommand.Action.DELETE, txId);
+        }
+
+    }
+
+    @Override
+    public void onPersist(PersistEvent event) throws HibernateException {
         String txId = (String) ThreadLocalContext.get(CompositeTransactionParticipantService.CURRENT_TRANSACTION_KEY);
         if (null == txId) {
             LOG.info("onPrePersist outside any transaction");
         } else {
             LOG.info("onPrePersist inside transaction [{}]", txId);
-            enlist(event.getEntity(), EntityCommand.Action.INSERT, txId);
+            enlist(event.getObject(), EntityCommand.Action.INSERT, txId);
         }
-        return true;
+
     }
 
     @Override
-    public boolean onPreUpdate(PreUpdateEvent event) {
+    public void onPersist(PersistEvent event, Map createdAlready) throws HibernateException {
+
+    }
+
+    @Override
+    public void onMerge(MergeEvent event) throws HibernateException {
         String txId = (String) ThreadLocalContext.get(CompositeTransactionParticipantService.CURRENT_TRANSACTION_KEY);
         if (null == txId) {
             LOG.info("onPreUpdate outside any transaction");
@@ -51,18 +82,13 @@ public class ChangeStateJpaListener implements PreInsertEventListener, PreUpdate
             LOG.info("onPreUpdate inside transaction [{}]", txId);
             enlist(event.getEntity(), EntityCommand.Action.UPDATE, txId);
         }
-        return true;
+
     }
 
     @Override
-    public boolean onPreDelete(PreDeleteEvent event) {
-        String txId = (String) ThreadLocalContext.get(CompositeTransactionParticipantService.CURRENT_TRANSACTION_KEY);
-        if (null == txId) {
-            LOG.info("onPreRemove outside any transaction");
-        } else {
-            LOG.info("onPreRemove inside transaction [{}]", txId);
-            enlist(event.getEntity(), EntityCommand.Action.DELETE, txId);
-        }
-        return false;
+    public void onMerge(MergeEvent event, Map copiedAlready) throws HibernateException {
+        // TODO Auto-generated method stub
+
     }
+
 }

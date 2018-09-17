@@ -58,7 +58,7 @@ public class ForumService extends CompositeTransactionParticipantService {
         LOG.info("Creating transaction [{}]", txId);
         Integer.parseInt(Forum.getTopicCategory());
         // throw exception if not integer
-        Forum saved = getCompositeTransactionDao().saveOrUpdate(Forum);
+        Forum saved = (net.jotorren.microservices.forum.domain.Forum) getCompositeTransactionDao().save(Forum);
 
         return saved.getForumId();
     }

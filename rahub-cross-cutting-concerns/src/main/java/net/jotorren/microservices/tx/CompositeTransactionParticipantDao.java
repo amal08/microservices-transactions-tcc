@@ -28,9 +28,10 @@ public class CompositeTransactionParticipantDao {
         return em;
     }
 
-    public void save(Object entity) {
+    public Object save(Object entity) {
         Session em = getEntityManager();
         em.persist(entity);
+        return entity;
     }
 
     public <T> T saveOrUpdate(T entity) {
@@ -40,7 +41,9 @@ public class CompositeTransactionParticipantDao {
     }
 
     public void remove(Object entity) {
-        getEntityManager().delete(entity);
+        Session em = getEntityManager();
+        em.delete(entity);
+
     }
 
     public void saveAndCommit(Object entity) {
@@ -49,7 +52,7 @@ public class CompositeTransactionParticipantDao {
         em.flush();
     }
 
-    public <T> T saveOrUpdateAndCommit(T entity) {
+    public <T> T updateAndCommit(T entity) {
         Session em = getEntityManager();
         T t = (T) em.merge(entity);
         em.flush();
@@ -74,7 +77,7 @@ public class CompositeTransactionParticipantDao {
                 saveAndCommit(command.getEntity());
                 break;
             case 1:
-                saveOrUpdateAndCommit(command.getEntity());
+                updateAndCommit(command.getEntity());
                 break;
             case 2:
                 removeAndCommit(command.getEntity());
